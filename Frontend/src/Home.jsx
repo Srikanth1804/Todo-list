@@ -41,14 +41,17 @@ const Home = () => {
   };
 
   let Handledelete = (id) => {
-    Axios.delete(`http://localhost:3000/api/deletedata/${id}`)
-      .then((res) => {
-        console.log(res.data.msg);
-      })
-      .catch((e) => {
-        console.log(res.data.msg);
-      });
-    Fetchdata();
+    if (confirm("Are you sure Want to delete?")) {
+      Axios.delete(`http://localhost:3000/api/deletedata/${id}`)
+        .then((res) => {
+          console.log(res.data.msg);
+          Fetchdata();
+        })
+
+        .catch((e) => {
+          console.log(res.data.msg);
+        });
+    }
   };
 
   let resetform = () => {
@@ -75,7 +78,9 @@ const Home = () => {
   return (
     <div>
       <div className="text-center">
-        <h1>TODO-LIST</h1>
+        <h1 style={{ fontVariant: "all-small-caps", fontWeight: "bold" }}>
+          TODO-LIST
+        </h1>
       </div>
 
       <form action="" onSubmit={Handlesubmit}>
@@ -87,7 +92,10 @@ const Home = () => {
             placeholder="Enter A Task..."
             required
             autoComplete="off"
-            onChange={(e) => setTask(e.target.value)}
+            onChange={(e) => {
+              let value = e.target.value;
+              setTask(value.charAt(0).toUpperCase() + value.slice(1));
+            }}
             value={Task}
             style={{ fontVariant: "small-caps", fontWeight: "500" }}
           />
